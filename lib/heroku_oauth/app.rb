@@ -20,17 +20,6 @@ module HerokuOauth
         @auth.credentials == [ENV['HEROKU_USERNAME'], ENV['HEROKU_PASSWORD']]
       end
 
-      def show_request
-        body = request.body.read
-        unless body.empty?
-          STDOUT.puts "request body:"
-          STDOUT.puts(@json_body = JSON.parse(body))
-        end
-        unless params.empty?
-          STDOUT.puts "params: #{params.inspect}"
-        end
-      end
-
       def json_body
         @json_body || (body = request.body.read && JSON.parse(body))
       end
@@ -66,7 +55,6 @@ module HerokuOauth
     
     # sso sign in
     get "/heroku/resources/:id" do
-      show_request
       sso
     end
 
@@ -78,7 +66,6 @@ module HerokuOauth
 
     # provision
     post '/heroku/resources' do
-      show_request
       protected!
       status 201
       resource = Resource.new(:id => @@resources.size + 1, 
@@ -89,7 +76,6 @@ module HerokuOauth
 
     # deprovision
     delete '/heroku/resources/:id' do
-      show_request
       protected!
       @@resources.delete(get_resource)
       "ok"
@@ -97,7 +83,6 @@ module HerokuOauth
 
     # plan change
     put '/heroku/resources/:id' do
-      show_request
       protected!
       resource = get_resource 
       resource.plan = json_body['plan']
