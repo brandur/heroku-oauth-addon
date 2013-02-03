@@ -28,7 +28,7 @@ module HerokuOauth
         @@resources.find {|u| u.id == params[:id].to_i } or halt 404, 'resource not found'
       end
     end
-    
+
     # sso landing page
     get "/" do
       halt 403, 'not logged in' unless session[:heroku_sso]
@@ -52,7 +52,7 @@ module HerokuOauth
 
       redirect '/'
     end
-    
+
     # sso sign in
     get "/heroku/resources/:id" do
       sso
@@ -62,7 +62,6 @@ module HerokuOauth
       puts params.inspect
       sso
     end
-
 
     # provision
     post '/heroku/resources' do
