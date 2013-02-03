@@ -7,6 +7,8 @@ GEM
       rest-client (>= 1.0)
     json (1.6.1)
     mime-types (1.16)
+    multi_json (1.5.0)
+    oj (2.0.0)
     puma (1.6.3)
       rack (~> 1.2)
     rack (1.5.1)
@@ -34,6 +36,8 @@ DEPENDENCIES
   haml
   heroku-nav (~> 0.1.24)
   json
+  multi_json
+  oj
   puma
   rack-instruments
   rack-ssl

@@ -19,7 +19,7 @@ module HerokuOauth
       end
 
       def json_body
-        @json_body ||= JSON.parse(request.body.read || "{}")
+        @json_body ||= MultiJson.decode(request.body.read || "{}")
       end
 
       def get_resource
@@ -31,23 +31,23 @@ module HerokuOauth
     post '/heroku/resources' do
       protected!
       status 201
-      resource = Resource.new(:id => @@resources.size + 1, 
+      resource = Resource.new(:id => @@resources.size + 1,
                               :plan => json_body.fetch('plan', 'test'))
       @@resources << resource
-      {
+      MultiJson.encode({
         id: resource.id,
         config: {
-          "HEROKU_ID"     => '123',
-          "HEROKU_SECRET" => '456abc',
+          "HEROKU_OAUTH_ID"     => '123',
+          "HEROKU_OAUTH_SECRET" => '456abc',
         }
-      }.to_json
+      })
     end
 
     # deprovision
     delete '/heroku/resources/:id' do
       protected!
       @@resources.delete(get_resource)
-      "ok"
+      MultiJson.encode({})
     end
 
     # plan change
@@ -55,7 +55,7 @@ module HerokuOauth
       protected!
       resource = get_resource 
       resource.plan = json_body['plan']
-      {}.to_json
+      MultiJson.encode({})
     end
   end
 end
