@@ -1,27 +1,24 @@
-## `kensa create my_addon --template sinatra`
+heroku-oauth
+============
 
-this repository is a sinatra template application for use with the 
-Heroku <a href="http://github.com/heroku/kensa">kensa</a> gem
+A Heroku addon implementation providing an easy way to create and register a Heroku OAuth client to an App.
 
-clone it via:
+## Development
 
-    > gem install kensa
-    > kensa create my_addon --template sinatra
-    > cd my_addon
-    > bundle install
-    > foreman start
+``` bash
+cp .env.sample .env
+# fill in reasonable values
+foreman start
+```
 
-In a new window: 
+## Platform Deploy
 
-    > cd my_addon
-    > kensa test provision
-    > kensa sso 1
-
-And you should be in a Heroku Single Sign On session for your brand new addon! 
-
-## Current status: 
-- deprovision - working
-- provision   - working
-- planchange  - working
-- GET SSO     - working
-- POST SSO    - working
+``` bash
+heroku create
+heroku config:add HEROKU_API_KEY=
+heroku config:add HEROKU_API_URL=
+heroku config:add HEROKU_USERNAME=
+heroku config:add HEROKU_PASSWORD=
+heroku config:add SSO_SALT=
+git push heroku master
+```
