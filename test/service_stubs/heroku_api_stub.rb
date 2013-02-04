@@ -41,6 +41,11 @@ description using `heroku addons:open heroku-oauth` from your app directory.
     MultiJson.encode(SampleClient)
   end
 
+  get "/oauth/clients/:id" do |id|
+    status(200)
+    MultiJson.encode(SampleClient)
+  end
+
   delete "/oauth/clients/:id" do |id|
     status(200)
     MultiJson.encode(SampleClient)

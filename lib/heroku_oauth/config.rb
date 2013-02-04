@@ -20,6 +20,10 @@ module HerokuOauth
       ENV["RACK_ENV"] == "production"
     end
 
+    def self.root
+      File.expand_path("../../../", __FILE__)
+    end
+
     def self.sso_salt
       ENV["SSO_SALT"] || raise("missing=SSO_SALT")
     end

@@ -1,0 +1,16 @@
+doctype 5
+
+html
+  head
+  body
+    == Heroku::Nav::Provider.html
+    form method="post"
+      input type="hidden" name=Rack::Csrf.field value=Rack::Csrf.token(env)
+      label for="name" Client Name:
+      input type="text" id="name" name="name" value=@client_hash["name"]
+      label for="description" Description:
+      textarea id="description" name="description"
+        = @client_hash["description"]
+      label for="redirect_uri" Callback URL:
+      input type="text" id="redirect_uri" name="redirect_uri" value=@client_hash["redirect_uri"]
+      input type="submit" value="Save"
