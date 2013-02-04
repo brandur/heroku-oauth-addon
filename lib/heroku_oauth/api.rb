@@ -7,7 +7,7 @@ module HerokuOauth
     post '/heroku/resources' do
       begin
         log :provision do
-          client = MultiJson.decode(api.post(
+          client_hash = MultiJson.decode(api.post(
             expects: 201,
             path: "/oauth/clients",
             query: {
@@ -17,12 +17,14 @@ module HerokuOauth
 A client provisioned from the heroku-oauth addon. Change its name and
 description using `heroku addons:open heroku-oauth` from your app directory.
               eos
+          client = Models::Client.create(client_id: client_hash["id"])
+          log :created_client, id: client.id, client_id: client.client_id
           status 201
           MultiJson.encode({
-            id: client["id"],
+            id: client.id,
             config: {
-              "HEROKU_OAUTH_ID"     => client["id"].to_s,
-              "HEROKU_OAUTH_SECRET" => client["secret"],
+              "HEROKU_OAUTH_ID"     => client_hash["id"].to_s,
+              "HEROKU_OAUTH_SECRET" => client_hash["secret"],
             }
           })
         end
@@ -36,7 +38,8 @@ description using `heroku addons:open heroku-oauth` from your app directory.
     delete '/heroku/resources/:id' do |id|
       begin
         log :deprovision, id: id do
-          api.delete(path: "/oauth/clients/#{id}", expects: 200)
+          client = Models::Client.first(id: id)
+          api.delete(path: "/oauth/clients/#{client.client_id}", expects: 200)
           MultiJson.encode({})
         end
       rescue Excon::Errors::Error
@@ -49,6 +52,7 @@ description using `heroku addons:open heroku-oauth` from your app directory.
     put '/heroku/resources/:id' do |id|
       begin
         log :change_plan, id: id, new_plan: json_body["plan"] do
+          # change plan does nothing
           MultiJson.encode({})
         end
       rescue Excon::Errors::Error
