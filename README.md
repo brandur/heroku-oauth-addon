@@ -7,7 +7,6 @@ A Heroku addon implementation providing an easy way to create and register a Her
 
 ``` bash
 cp .env.sample .env
-# fill in reasonable values
 foreman start
 ```
 
