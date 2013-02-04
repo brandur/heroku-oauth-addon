@@ -1,11 +1,14 @@
 heroku-oauth
 ============
 
-A Heroku addon implementation providing an easy way to create and register a Heroku OAuth client to an App.
+A Heroku addon implementation providing an easy way to create and register a
+Heroku OAuth client to an App.
 
 ## Development
 
-The `Procfile` contains an API stub that will respond with reasonable sample data so that something like a `kensa test all` can be run against a local development instance of the addon.
+The `Procfile` contains an API stub that will respond with reasonable sample
+data so that something like a `kensa test all` can be run against a local
+development instance of the addon.
 
 ``` bash
 cp addon-manifest.json.sample
