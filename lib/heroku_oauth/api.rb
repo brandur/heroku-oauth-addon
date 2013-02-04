@@ -66,8 +66,8 @@ description using `heroku addons:open heroku-oauth` from your app directory.
 
     def authorized?
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-      @auth.provided? && @auth.basic? && @auth.credentials && 
-      @auth.credentials == [ENV['HEROKU_USERNAME'], ENV['HEROKU_PASSWORD']]
+      @auth.provided? && @auth.basic? && @auth.credentials &&
+      @auth.credentials == [Config.heroku_username, Config.heroku_password]
     end
 
     def get_resource

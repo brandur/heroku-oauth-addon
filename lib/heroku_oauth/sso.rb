@@ -1,6 +1,6 @@
 module HerokuOauth
   class SSO < Sinatra::Base
-    use Rack::Session::Cookie, secret: ENV['SSO_SALT']
+    use Rack::Session::Cookie, secret: Config.sso_salt
 
     @@resources = []
 
@@ -20,7 +20,7 @@ module HerokuOauth
     end
 
     def sso
-      pre_token = params[:id] + ':' + ENV['SSO_SALT'] + ':' + params[:timestamp]
+      pre_token = params[:id] + ':' + Config.sso_salt + ':' + params[:timestamp]
       token = Digest::SHA1.hexdigest(pre_token).to_s
       halt 403 if token != params[:token]
       halt 403 if params[:timestamp].to_i < (Time.now - 2*60).to_i
@@ -40,7 +40,6 @@ module HerokuOauth
     end
 
     post '/sso/login' do
-      puts params.inspect
       sso
     end
   end
