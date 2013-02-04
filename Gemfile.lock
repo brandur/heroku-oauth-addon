@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    excon (0.16.10)
     haml (3.1.2)
     heroku-nav (0.1.24)
       json
@@ -33,6 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  excon
   haml
   heroku-nav (~> 0.1.24)
   json

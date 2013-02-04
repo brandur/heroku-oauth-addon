@@ -1,5 +1,6 @@
 source :rubygems
 
+gem "excon"
 gem "haml"
 gem "heroku-nav", "~> 0.1.24", require: 'heroku/nav'
 gem "json"
