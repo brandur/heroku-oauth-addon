@@ -1,0 +1,16 @@
+{
+  "id": "heroku-oauth",
+  "api": {
+    "config_vars": [ "HEROKU_OAUTH_ID", "HEROKU_OAUTH_SECRET" ],
+    "password": "heroku-oauth",
+    "sso_salt": "some-sso-salt",
+    "production": {
+      "base_url": "https://heroku-oauth.com/heroku/resources",
+      "sso_url": "https://heroku-oauth.com/sso/login"
+    },
+    "test": {
+      "base_url": "http://localhost:5000/heroku/resources",
+      "sso_url": "http://localhost:5000/sso/login"
+    }
+  }
+}
