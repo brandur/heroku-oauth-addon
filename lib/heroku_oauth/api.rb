@@ -6,6 +6,7 @@ module HerokuOauth
 
     post '/heroku/resources' do
       begin
+	    log :params, params
         log :provision do
           client_hash = MultiJson.decode(api.post(
             expects: 201,
