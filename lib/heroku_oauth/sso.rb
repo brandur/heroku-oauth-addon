@@ -53,9 +53,13 @@ module HerokuOauth
       halt 403 if token != params[:token]
     end
 
-    def log(action, attributes={}, &block)
-      attributes.merge!(request_id: request.env["REQUEST_ID"])
-      Slides.log(action, attributes, &block)
+    def log(action, data={}, &block)
+      data.merge!(id: request_ids ? request_ids.join(",") : nil)
+      Slides.log(action, data, &block)
+    end
+
+    def request_ids
+      request.env["REQUEST_IDS"]
     end
 
     def sso!
