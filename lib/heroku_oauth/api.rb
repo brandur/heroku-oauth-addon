@@ -6,18 +6,12 @@ module HerokuOauth
 
     post '/heroku/resources' do
       begin
-	    log :params, (MultiJson.decode(request.body) || {})
-        log :provision do
+	    options = parse_options
+        log :provision, options do
           client_hash = MultiJson.decode(api.post(
             expects: 201,
             path: "/oauth/clients",
-            query: {
-              name:         "Third-party Heroku OAuth Client",
-              redirect_uri: "https://example.com/oauth/callback/heroku",
-              description:  <<-eos }).body)
-A client provisioned from the heroku-oauth addon. Change its name and
-description using `heroku addons:open heroku-oauth` from your app directory.
-              eos
+            query: options).body)
           client = Models::Client.create(client_id: client_hash["id"])
           log :created_client, id: client.id, client_id: client.client_id
           status 201
@@ -87,6 +81,23 @@ description using `heroku addons:open heroku-oauth` from your app directory.
       attributes.merge!(request_id: request.env["REQUEST_ID"])
       Slides.log(action, attributes, &block)
     end
+
+	def parse_options
+      return {} if (body = request.body.read).length == 0
+	  params = MultiJson.decode(body)
+	  options = {
+		name:         "Third-party Heroku OAuth Client",
+		redirect_uri: "https://example.com/auth/heroku/callback",
+		description:  <<-eos,
+A client provisioned from the heroku-oauth addon. Change its name and
+description using `heroku addons:open heroku-oauth` from your app directory.
+		eos
+	  }.merge({
+		name:         params["options"]["name"],
+		redirect_uri: params["options"]["url"],
+		description:  params["options"]["description"],
+	  })
+	end
 
     def protected!
       unless authorized?
