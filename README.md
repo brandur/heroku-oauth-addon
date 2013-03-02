@@ -4,6 +4,30 @@ heroku-oauth
 A Heroku addon implementation providing an easy way to create and register a
 Heroku OAuth client to an App.
 
+## Usage
+
+First of all add the add to your app:
+
+``` bash
+heroku addons:add heroku-oauth
+```
+
+This injects the config vars `HEROKU_OAUTH_ID` and `HEROKU_OAUTH_SECRET` into your app's environment. It's recommend that you consume them with the [Heroku OmniAuth strategy](https://github.com/heroku/omniauth-heroku) which can simply be added to your `Gemfile` and running `bundle install`:
+
+``` ruby
+gem 'heroku-omniauth'
+```
+
+Now configure OmniAuth as middleware:
+
+``` ruby
+use OmniAuth::Builder do
+  provider :heroku, ENV['HEROKU_OAUTH_ID'], ENV['HEROKU_OAUTH_SECRET']
+end
+```
+
+And prepare to handle authentication callbacks at `/auth/heroku/callback`. [Heroku OAuth Ruby example](https://github.com/heroku/heroku-oauth-example-ruby) demonstrates how to do this quite simply.
+
 ## Development
 
 The `Procfile` contains an API stub that will respond with reasonable sample
